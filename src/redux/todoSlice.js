@@ -13,6 +13,7 @@ export const getTodosAsync = createAsyncThunk(
 
 export const todoSlice = createSlice({
 	name: 'todos',
+  /*Create inital state */
 	initialState: [
 		{ id: 1, title: 'todo1', completed: false },
 		{ id: 2, title: 'todo2', completed: false },
@@ -20,6 +21,7 @@ export const todoSlice = createSlice({
 		{ id: 4, title: 'todo4', completed: false },
 		{ id: 5, title: 'todo5', completed: false },
 	],
+    /* Reducer - applying dispatched actions type, payload */
 	reducers: {
 		addTodo: (state, action) => {
 			const todo = {
@@ -44,6 +46,9 @@ export const todoSlice = createSlice({
 	},
 });
 
+/*making the state and actions avialable to other components */
+
+/*dispactched */
 export const { addTodo, toggleComplete, deleteTodo } = todoSlice.actions;
 
 export default todoSlice.reducer;
