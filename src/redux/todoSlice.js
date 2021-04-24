@@ -31,7 +31,9 @@ export const addTodoAsync = createAsyncThunk(
 
 export const todoSlice = createSlice({
 	name: 'todos',
+    /*Create initial state */
 	initialState: [],
+    /* Reducer - applying dispatched actions type, payload */
 	reducers: {
 		addTodo: (state, action) => {
 			const todo = {
@@ -54,11 +56,15 @@ export const todoSlice = createSlice({
 			return action.payload.todos;
 		},
 		[addTodoAsync.fulfilled]: (state, action) => {
+      /* pust change state to store */
 			state.push(action.payload.todo);
 		},
 	},
 });
 
+/*making the state and actions avialable to other components */
+
+/*dispactched */
 export const { addTodo, toggleComplete, deleteTodo } = todoSlice.actions;
 
 export default todoSlice.reducer;
