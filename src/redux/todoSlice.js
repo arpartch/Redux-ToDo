@@ -29,11 +29,30 @@ export const addTodoAsync = createAsyncThunk(
 	}
 );
 
+export const toggleCompleteAsync = createAsyncThunk(
+	'todos/completeTodoAsync',
+	async (payload) => {
+		const resp = await fetch(`http://localhost:7000/todos/${payload.id}`, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ completed: payload.completed }),
+		});
+
+		if (resp.ok) {
+			const todo = await resp.json();
+			return { todo };
+		}
+	}
+);
+
 export const todoSlice = createSlice({
 	name: 'todos',
     /*Create initial state */
 	initialState: [],
-    /* Reducer - applying dispatched actions type, payload */
+
+  /* Reducer - applying dispatched actions type, payload */
 	reducers: {
 		addTodo: (state, action) => {
 			const todo = {
@@ -41,6 +60,7 @@ export const todoSlice = createSlice({
 				title: action.payload.title,
 				completed: false,
 			};
+      /* pust change state to store */
 			state.push(todo);
 		},
 		toggleComplete: (state, action) => {
@@ -56,8 +76,13 @@ export const todoSlice = createSlice({
 			return action.payload.todos;
 		},
 		[addTodoAsync.fulfilled]: (state, action) => {
-      /* pust change state to store */
 			state.push(action.payload.todo);
+		},
+		[toggleCompleteAsync.fulfilled]: (state, action) => {
+			const index = state.findIndex(
+				(todo) => todo.id === action.payload.todo.id
+			);
+			state[index].completed = action.payload.todo.completed;
 		},
 	},
 });
@@ -65,6 +90,8 @@ export const todoSlice = createSlice({
 /*making the state and actions avialable to other components */
 
 /*dispactched */
+export const { addTodo, toggleComplete, deleteTodo } = todoSlice.actions;
+
 export const { addTodo, toggleComplete, deleteTodo } = todoSlice.actions;
 
 export default todoSlice.reducer;
