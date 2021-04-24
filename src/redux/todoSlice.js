@@ -21,13 +21,16 @@ export const todoSlice = createSlice({
       /* pust change state to store */
 			state.push(todo);
 		},
-
+    toggleComplete: (state, action) => {
+			const index = state.findIndex((todo) => todo.id === action.payload.id);
+			state[index].completed = action.payload.completed;
+    },
 	},
 });
 
 /*making the state and actions avialable to other components */
 
 /*dispactched */
-export const { addTodo } = todoSlice.actions;
+export const { addTodo, toggleComplete } = todoSlice.actions;
 
 export default todoSlice.reducer;
